@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/0.8.0/stellar-sdk.js"></script>
+    <script src="browserified.js"></script>
+    <script>
+        function selectAndRun() {
+            var select = document.getElementById('operation');
+            var operation = select.options[select.selectedIndex].text;
+            runScript('signTx', operation);
+        }
+    </script>
+</head>
+<body onload="connect();">
+<div id="msg"></div>
+<div id="form">
+    <select id="operation">
+        <option>createAccount</option>
+        <option>payment</option>
+        <option>pathPayment</option>
+        <option>createOffer</option>
+        <option>removeOffer</option>
+        <option>changeOffer</option>
+        <option>passiveOffer</option>
+        <option>changeTrust</option>
+        <option>removeTrust</option>
+        <option>allowTrust</option>
+        <option>revokeTrust</option>
+        <option>setOptions</option>
+        <option>accountMerge</option>
+        <option>manageData</option>
+        <option>inflation</option>
+    </select>
+    <input id='signTx' type="button" onClick="selectAndRun()" value="Sign">
+</div>
+</body>
+</html>

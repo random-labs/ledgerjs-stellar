@@ -1,15 +1,17 @@
 {
   "name": "stellarjs-test",
   "version": "0.0.0",
-  "description": "Test ledgerjs communication API",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lenondupe/ledgerjs-test.git"
-  },
-  "author": "lenondupe@gmail.com",
-  "license": "Apache-2.0",
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "^3.0.0",
+    "@ledgerhq/hw-transport-u2f": "^3.0.0",
     "babel-runtime": "^6.26.0"
+  },
+  "devDependencies": {
+    "stellar-sdk": "^0.7.3",
+    "browserify": "^13.1.0"
+  },
+  "scripts": {
+    "browserify-test": "browserify --standalone runScript --exclude stellar-sdk --outfile test/browserified.js test/browser.js",
+    "clean": "rm -f test/browserified.js"
   }
 }
