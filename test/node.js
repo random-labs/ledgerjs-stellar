@@ -1,4 +1,4 @@
-Transport = require("@ledgerhq/hw-transport-node-hid").default;
+const Transport = require("@ledgerhq/hw-transport-node-hid").default;
 
 const nodeCmdArgs = process.argv.slice(2);
 const scriptName = nodeCmdArgs[0];

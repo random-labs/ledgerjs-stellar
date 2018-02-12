@@ -1,17 +1,53 @@
 <html>
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/0.8.0/stellar-sdk.js"></script>
-    <script src="browserified.js"></script>
+    <script src="../browser/stellar-ledger-api.js"></script>
+    <script src="../browser/test.js"></script>
     <script>
+        function getPublicKey(confirm) {
+          let bip32Path = document.getElementById('bip32Path').value;
+          StellarLedger.Transport.create().then(function (transport) {
+            let api = new StellarLedger.Api(transport);
+            api.getPublicKey(bip32Path, true, confirm).then(function (result) {
+              document.getElementById('address').innerHTML = result.publicKey;
+            }).catch(function (error) {
+              document.getElementById('address').innerHTML = error;
+            });
+          });
+        }
         function selectAndRun() {
-            var select = document.getElementById('operation');
-            var operation = select.options[select.selectedIndex].text;
+            let select = document.getElementById('operation');
+            let operation = select.options[select.selectedIndex].text;
             runScript('signTx', operation);
+        }
+        function connect() {
+          StellarLedger.Transport.create().then(function (transport) {
+            let api = new StellarLedger.Api(transport);
+            api.getAppConfiguration().then(onConnect).catch(onConnectError);
+          });
+        }
+        function onConnect(result) {
+          displayStatus('Connected. App version: ' + result.version);
+        }
+        function onConnectError() {
+          displayStatus('Error connecting');
+        }
+        function displayStatus(msg) {
+          document.getElementById('status').innerHTML = msg;
         }
     </script>
 </head>
-<body onload="connect();">
-<div id="msg"></div>
+<body onload="connect()">
+<div id="status">Connect Ledger</div>
+<div>&nbsp;</div>
+<div id="addressForm">
+  <input type="text" id="bip32Path" value="44'/148'/0'">
+  <input id='getPublicKey' type="button" onClick="getPublicKey(false)" value="Get Public Key">
+  <input id='confirmPublicKey' type="button" onClick="getPublicKey(true)" value="Confirm Public Key">
+</div>
+<div>&nbsp;</div>
+<div id="address">&nbsp;</div>
+<div>&nbsp;</div>
 <div id="form">
     <select id="operation">
         <option>createAccount</option>

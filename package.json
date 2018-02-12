@@ -8,10 +8,13 @@
   },
   "devDependencies": {
     "stellar-sdk": "^0.7.3",
-    "browserify": "^13.1.0"
+    "browserify": "^13.1.0",
+    "uglify-js": "2.7.3"
   },
   "scripts": {
-    "browserify-test": "browserify --standalone runScript --exclude stellar-sdk --outfile test/browserified.js test/browser.js",
-    "clean": "rm -f test/browserified.js"
+    "browserify": "mkdir -p browser && browserify --standalone StellarLedger --outfile browser/stellar-ledger-api.js src/browser.js",
+    "browserify-test": "mkdir -p browser && browserify --standalone runScript --exclude stellar-sdk --outfile browser/test.js test/browser.js",
+    "uglify": "uglifyjs -o browser/stellar-ledger-api.min.js browser/stellar-ledger-api.js",
+    "clean": "rm -rf browser"
   }
 }

@@ -1,4 +1,4 @@
-Transport = require("@ledgerhq/hw-transport-u2f").default;
+const Transport = require("@ledgerhq/hw-transport-u2f").default;
 
 const scripts = {
   getPublicKey: require('./getPublicKey'),
