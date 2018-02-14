@@ -1,4 +1,4 @@
-const Str = require("ledger-libs/packages/hw-app-str").default;
+const Str = require("@ledgerhq/hw-app-str").default;
 if (typeof(StellarSdk) === 'undefined') {
   StellarSdk = require('stellar-sdk');
 }

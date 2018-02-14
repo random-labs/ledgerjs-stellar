@@ -1,13 +1,13 @@
 <html>
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/0.8.0/stellar-sdk.js"></script>
-    <script src="../browser/stellar-ledger-api.js"></script>
+    <script src="../browser/ledgerjs-stellar.js"></script>
     <script src="../browser/test.js"></script>
     <script>
         function getPublicKey(confirm) {
           let bip32Path = document.getElementById('bip32Path').value;
-          StellarLedger.Transport.create().then(function (transport) {
-            let api = new StellarLedger.Api(transport);
+          LedgerjsStellar.Transport.create().then(function (transport) {
+            let api = new LedgerjsStellar.Api(transport);
             api.getPublicKey(bip32Path, true, confirm).then(function (result) {
               document.getElementById('address').innerHTML = result.publicKey;
             }).catch(function (error) {
@@ -21,8 +21,8 @@
             runScript('signTx', operation);
         }
         function connect() {
-          StellarLedger.Transport.create().then(function (transport) {
-            let api = new StellarLedger.Api(transport);
+          LedgerjsStellar.Transport.create().then(function (transport) {
+            let api = new LedgerjsStellar.Api(transport);
             api.getAppConfiguration().then(onConnect).catch(onConnectError);
           });
         }

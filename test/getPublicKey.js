@@ -1,4 +1,4 @@
-const Str = require("ledger-libs/packages/hw-app-str").default;
+const Str = require("@ledgerhq/hw-app-str").default;
 
 function getPublicKey(Transport, bip32Path, confirm) {
   if (!bip32Path) {

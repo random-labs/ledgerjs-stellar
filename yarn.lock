@@ -2,23 +2,33 @@
 # yarn lockfile v1
 
 
-"@ledgerhq/hw-transport-node-hid@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-3.0.0.tgz#eda95b99fa5d43e8703dbc0682fdb2a386a0dd25"
+"@ledgerhq/hw-app-str@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-app-str/-/hw-app-str-4.0.0.tgz#d7002eac37c58c8b114dc80edc543b69ef265d2c"
   dependencies:
-    "@ledgerhq/hw-transport" "^3.0.0"
+    "@ledgerhq/hw-transport" "^4.0.0"
+    base32.js "^0.1.0"
+    crc "^3.5.0"
+    sha.js "^2.3.6"
+    tweetnacl "^1.0.0"
+
+"@ledgerhq/hw-transport-node-hid@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-4.0.0.tgz#6b3aae9da62b9601476f57d651b06a6d172c0ee9"
+  dependencies:
+    "@ledgerhq/hw-transport" "^4.0.0"
     node-hid "^0.7.2"
 
-"@ledgerhq/hw-transport-u2f@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-u2f/-/hw-transport-u2f-3.0.0.tgz#1cc11badf6e95b7070c4c419fabcd18432c7a400"
+"@ledgerhq/hw-transport-u2f@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-u2f/-/hw-transport-u2f-4.0.0.tgz#2c8d50a5124a2e3c694b15db09d017290c921f28"
   dependencies:
-    "@ledgerhq/hw-transport" "^3.0.0"
+    "@ledgerhq/hw-transport" "^4.0.0"
     u2f-api "^0.2.7"
 
-"@ledgerhq/hw-transport@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-3.0.0.tgz#0a191626f906aa8b786b762a0e08641956c17ede"
+"@ledgerhq/hw-transport@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.0.0.tgz#de0bab8d1d7e963b069bbd1164bc687e8616c5e4"
   dependencies:
     events "^1.1.1"
 
@@ -126,7 +136,7 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
-base32.js@~0.1.0:
+base32.js@^0.1.0, base32.js@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base32.js/-/base32.js-0.1.0.tgz#b582dec693c2f11e893cf064ee6ac5b6131a2202"
 
@@ -402,7 +412,7 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-crc@^3.3.0:
+crc@^3.3.0, crc@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/crc/-/crc-3.5.0.tgz#98b8ba7d489665ba3979f59b21381374101a1964"
 
@@ -1360,6 +1370,10 @@ tunnel-agent@^0.6.0:
 tweetnacl@^0.14.5:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
+
+tweetnacl@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.0.tgz#713d8b818da42068740bf68386d0479e66fc8a7b"
 
 typedarray@~0.0.5:
   version "0.0.6"

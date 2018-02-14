@@ -1,6 +1,5 @@
 .idea
 node_modules
-server.pem
 test/browserified.js
 yarn-error.log
 browser
