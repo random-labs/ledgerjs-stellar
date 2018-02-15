@@ -171,7 +171,8 @@ function signTx(Transport, op, bip32Path) {
   if (!op) {
     op = 'payment';
   }
-  Transport.create().then(function (transport) {
+  Transport.create(180000, 180000).then(function (transport) {
+    transport.setDebugMode(true);
     const str = new Str(transport);
     str.getPublicKey(bip32Path).then(function (pk) {
       loadAccount(pk.publicKey).then(function (account) {

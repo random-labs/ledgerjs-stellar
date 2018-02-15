@@ -4,15 +4,13 @@
     <script src="../browser/ledgerjs-stellar.js"></script>
     <script src="../browser/test.js"></script>
     <script>
+        let api = null;
         function getPublicKey(confirm) {
           let bip32Path = document.getElementById('bip32Path').value;
-          LedgerjsStellar.Transport.create().then(function (transport) {
-            let api = new LedgerjsStellar.Api(transport);
-            api.getPublicKey(bip32Path, true, confirm).then(function (result) {
-              document.getElementById('address').innerHTML = result.publicKey;
-            }).catch(function (error) {
-              document.getElementById('address').innerHTML = error;
-            });
+          this.api.getPublicKey(bip32Path, true, confirm).then(function (result) {
+            document.getElementById('address').innerHTML = result.publicKey;
+          }).catch(function (error) {
+            document.getElementById('address').innerHTML = error;
           });
         }
         function selectAndRun() {
@@ -21,9 +19,11 @@
             runScript('signTx', operation);
         }
         function connect() {
-          LedgerjsStellar.Transport.create().then(function (transport) {
-            let api = new LedgerjsStellar.Api(transport);
-            api.getAppConfiguration().then(onConnect).catch(onConnectError);
+          LedgerjsStellar.Transport.create(3600000, 3600000).then(function (transport) {
+            transport.setDebugMode(true);
+            transport.on('disconnect', onDisconnect);
+            this.api = new LedgerjsStellar.Api(transport);
+            this.api.getAppConfiguration().then(onConnect).catch(onConnectError);
           });
         }
         function onConnect(result) {
@@ -31,6 +31,9 @@
         }
         function onConnectError() {
           displayStatus('Error connecting');
+        }
+        function onDisconnect() {
+          displayStatus('Disconnected');
         }
         function displayStatus(msg) {
           document.getElementById('status').innerHTML = msg;
