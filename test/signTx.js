@@ -119,20 +119,20 @@ operations = {
   },
   setOptions: function(account) {
     var opts = {};
-    // opts.inflationDest = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
+    opts.inflationDest = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
     opts.clearFlags = StellarSdk.AuthRevocableFlag | StellarSdk.AuthImmutableFlag;
     opts.setFlags = StellarSdk.AuthRequiredFlag;
     opts.masterWeight = 255;
-    // opts.lowThreshold = 255;
-    // opts.medThreshold = 255;
-    // opts.highThreshold = 255;
+    opts.lowThreshold = 255;
+    opts.medThreshold = 255;
+    opts.highThreshold = 255;
 
     opts.signer = {
       ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
       // sha256Hash: revokeTrustTx(account).hash().toString('hex'),
       weight: 1
     };
-    opts.homeDomain = "www.longexampleislong.com";
+    // opts.homeDomain = "www.longexampleislong.com";
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.setOptions(opts)).build();
   },

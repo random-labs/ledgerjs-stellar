@@ -4,13 +4,16 @@
     <script src="../browser/ledgerjs-stellar.js"></script>
     <script src="../browser/test.js"></script>
     <script>
+        let transport = null;
         let api = null;
         function getPublicKey(confirm) {
           let bip32Path = document.getElementById('bip32Path').value;
-          this.api.getPublicKey(bip32Path, true, confirm).then(function (result) {
-            document.getElementById('address').innerHTML = result.publicKey;
-          }).catch(function (error) {
-            document.getElementById('address').innerHTML = error;
+          connect().then(function () {
+            api.getPublicKey(bip32Path, true, confirm).then(function (result) {
+              document.getElementById('address').innerHTML = result.publicKey;
+            }).catch(function (error) {
+              document.getElementById('address').innerHTML = error;
+            });
           });
         }
         function selectAndRun() {
@@ -18,22 +21,26 @@
             let operation = select.options[select.selectedIndex].text;
             runScript('signTx', operation);
         }
-        function connect() {
-          LedgerjsStellar.Transport.create(3600000, 3600000).then(function (transport) {
+        function doConnect() {
+          displayStatus('Connect ledger');
+          return LedgerjsStellar.Transport.create(3600000).then(function (t) {
+            transport = t;
             transport.setDebugMode(true);
-            transport.on('disconnect', onDisconnect);
-            this.api = new LedgerjsStellar.Api(transport);
-            this.api.getAppConfiguration().then(onConnect).catch(onConnectError);
+            api = new LedgerjsStellar.Api(transport);
+            displayStatus('Connected');
+          }).catch(function () {
+            displayStatus('Error connecting');
           });
         }
-        function onConnect(result) {
-          displayStatus('Connected. App version: ' + result.version);
-        }
-        function onConnectError() {
-          displayStatus('Error connecting');
-        }
-        function onDisconnect() {
-          displayStatus('Disconnected');
+        function connect() {
+          if (api !== null) {
+            return api.getAppConfiguration().catch(function () {
+              api = null;
+              return doConnect();
+            });
+          } else {
+            return doConnect();
+          }
         }
         function displayStatus(msg) {
           document.getElementById('status').innerHTML = msg;
@@ -41,7 +48,7 @@
     </script>
 </head>
 <body onload="connect()">
-<div id="status">Connect Ledger</div>
+<div id="status"></div>
 <div>&nbsp;</div>
 <div id="addressForm">
   <input type="text" id="bip32Path" value="44'/148'/0'">
