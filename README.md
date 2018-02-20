@@ -1,6 +1,6 @@
-# ledgerjs-stellar
+# ledgerjs-test
 
-Some scripts to test Stellar Ledger integration and a script to create a browserified version of the library.
+Some scripts to demo and test Stellar Ledger integration and a script to create a browserified version of the library.
 
 ### Building
 
@@ -19,12 +19,7 @@ Minify it:
 $ yarn run uglify
 ```
 
-Browserify the tests:
-```
-$ yarn run browserify-test
-```
-
-### Running the tests with NodeJS
+### Running the NodeJS scripts
 
 Get public key:
 ```
@@ -36,9 +31,9 @@ Transaction signing:
 $ node test/node.js signTx [operation]
 ```
 
-### Running the tests in the browser
+### Running the browser demo
 
 - Make sure to enable browser support
-- Build the browserified files first as described above.
+- Build the browserified file as described above.
 - Run `python HttpsServer.py`
 - In Chrome open `https://localhost:4443/test/index.html` 

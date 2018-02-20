@@ -2,58 +2,118 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/0.8.0/stellar-sdk.js"></script>
     <script src="../browser/ledgerjs-stellar.js"></script>
-    <script src="../browser/test.js"></script>
+    <script src="operations.js"></script>
     <script>
-        let transport = null;
-        let api = null;
+        const openTimeout = 3600000; // one hour
+        const exchangeTimeout = 3600000; // one hour
+        let _api = null;
+
         function getPublicKey(confirm) {
           let bip32Path = document.getElementById('bip32Path').value;
-          connect().then(function () {
-            api.getPublicKey(bip32Path, true, confirm).then(function (result) {
-              document.getElementById('address').innerHTML = result.publicKey;
+          return connect().then(function (api) {
+            displayStatus('Getting public key...');
+            return api.getPublicKey(bip32Path, true, confirm).then(function (result) {
+              displayAddress(result.publicKey);
+              displayStatus('Received public key');
+              return result.publicKey;
             }).catch(function (error) {
-              document.getElementById('address').innerHTML = error;
+              displayStatus('Failed to get public key: ' + error);
             });
           });
         }
-        function selectAndRun() {
-            let select = document.getElementById('operation');
-            let operation = select.options[select.selectedIndex].text;
-            runScript('signTx', operation);
+
+        function sign() {
+          let select = document.getElementById('operation');
+          let operation = select.options[select.selectedIndex].text;
+          signTransaction(operations[operation]);
         }
+
+        function loadAccount(publicKey) {
+          const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+          return server.loadAccount(publicKey);
+        }
+
+        function signTransaction(operation) {
+            getPublicKey(false).then(function (publicKey) {
+                displayStatus('Loading account data...');
+                loadAccount(publicKey).then(function (account) {
+                  const transaction = operation(account);
+                  connect().then(function (api) {
+                    StellarSdk.Network.useTestNetwork();
+                    let bip32Path = document.getElementById('bip32Path').value;
+                    displayStatus('Signing transaction...');
+                    api.signTransaction(bip32Path, transaction.signatureBase()).then(function (result) {
+                      const txHash = transaction.hash();
+                      const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
+                      if (keyPair.verify(txHash, result.signature)) {
+                        displayStatus('Transaction signed');
+                      } else {
+                        displayStatus('Bad signature');
+                      }
+                    }).catch(function () {
+                      displayStatus('Failed to sign transaction');
+                    });
+                  });
+                }).catch(function () {
+                  displayStatus('Failed to load account data');
+                });
+            });
+        }
+
         function doConnect() {
-          displayStatus('Connect ledger');
-          return LedgerjsStellar.Transport.create(3600000).then(function (t) {
-            transport = t;
+          displayStatus('Connecting');
+          return LedgerjsStellar.Transport.create(openTimeout).then(function (transport) {
             transport.setDebugMode(true);
-            api = new LedgerjsStellar.Api(transport);
+            transport.setExchangeTimeout(exchangeTimeout);
+            _api = new LedgerjsStellar.Api(transport);
             displayStatus('Connected');
+            return _api;
           }).catch(function () {
             displayStatus('Error connecting');
           });
         }
+
         function connect() {
-          if (api !== null) {
-            return api.getAppConfiguration().catch(function () {
-              api = null;
+          if (_api !== null) {
+            displayStatus('Connecting');
+            return _api.getAppConfiguration().then(function () {
+              displayStatus('Connected');
+              return _api;
+            }).catch(function () {
+              _api = null;
               return doConnect();
             });
           } else {
             return doConnect();
           }
         }
+
         function displayStatus(msg) {
           document.getElementById('status').innerHTML = msg;
         }
+
+        function displayAddress(msg) {
+          document.getElementById('address').innerHTML = msg;
+        }
+
+        function init() {
+          connect().then(function () {
+            const inputs = document.getElementsByTagName('input');
+            for(let i = 0; i < inputs.length; i++){
+              inputs[i].disabled = false;
+            }
+          })
+        }
+
     </script>
 </head>
-<body onload="connect()">
-<div id="status"></div>
+<body onload="init()">
+<div>Status: <span id="status" style="background-color: lightgray"></span></div>
 <div>&nbsp;</div>
 <div id="addressForm">
-  <input type="text" id="bip32Path" value="44'/148'/0'">
-  <input id='getPublicKey' type="button" onClick="getPublicKey(false)" value="Get Public Key">
-  <input id='confirmPublicKey' type="button" onClick="getPublicKey(true)" value="Confirm Public Key">
+  <input type="text" id="bip32Path" value="44'/148'/0'" disabled>
+  <input id='getPublicKey' type="button" onClick="getPublicKey(false)" value="Get Public Key" disabled>
+  <input id='confirmPublicKey' type="button" onClick="getPublicKey(true)" value="Confirm Public Key" disabled>
 </div>
 <div>&nbsp;</div>
 <div id="address">&nbsp;</div>
@@ -76,7 +136,7 @@
         <option>manageData</option>
         <option>inflation</option>
     </select>
-    <input id='signTx' type="button" onClick="selectAndRun()" value="Sign">
+    <input id='signTx' type="button" onClick="sign()" value="Sign" disabled>
 </div>
 </body>
 </html>

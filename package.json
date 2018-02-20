@@ -14,7 +14,6 @@
   },
   "scripts": {
     "browserify": "mkdir -p browser && browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
-    "browserify-test": "mkdir -p browser && browserify --standalone runScript --exclude stellar-sdk --outfile browser/test.js test/browser.js",
     "uglify": "uglifyjs -o browser/ledgerjs-stellar.min.js browser/ledgerjs-stellar.js",
     "clean": "rm -rf browser"
   }
