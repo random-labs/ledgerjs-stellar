@@ -142,9 +142,9 @@ const operations = {
   manageData: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
-        name: "appdata",
+        name: "verylongapplicationdataname",
         value: "value"
-      })).addMemo(StellarSdk.Memo.hash(this.accountMerge(account).hash()))
+      }))
       .build();
   },
   inflation: function(account) {

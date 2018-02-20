@@ -7,17 +7,22 @@
         const openTimeout = 3600000; // one hour
         const exchangeTimeout = 3600000; // one hour
         let _api = null;
+        let _appVersion = null;
 
         function getPublicKey(confirm) {
           let bip32Path = document.getElementById('bip32Path').value;
           return connect().then(function (api) {
-            displayStatus('Getting public key...');
+            const msg = confirm ? 'Confirm public key...' : 'Getting public key...';
+            displayStatus(msg);
+            disableControls(true);
             return api.getPublicKey(bip32Path, true, confirm).then(function (result) {
               displayAddress(result.publicKey);
               displayStatus('Received public key');
+              disableControls(false);
               return result.publicKey;
             }).catch(function (error) {
               displayStatus('Failed to get public key: ' + error);
+              throw error;
             });
           });
         }
@@ -42,6 +47,7 @@
                     StellarSdk.Network.useTestNetwork();
                     let bip32Path = document.getElementById('bip32Path').value;
                     displayStatus('Signing transaction...');
+                    disableControls(true);
                     api.signTransaction(bip32Path, transaction.signatureBase()).then(function (result) {
                       const txHash = transaction.hash();
                       const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
@@ -50,12 +56,12 @@
                       } else {
                         displayStatus('Bad signature');
                       }
-                    }).catch(function () {
-                      displayStatus('Failed to sign transaction');
+                      displaySignature(result.signature.toString('hex'));
+                      disableControls(false);
+                    }).catch(function (err) {
+                      displayStatus(err);
                     });
                   });
-                }).catch(function () {
-                  displayStatus('Failed to load account data');
                 });
             });
         }
@@ -74,17 +80,23 @@
         }
 
         function connect() {
-          if (_api !== null) {
-            displayStatus('Connecting');
-            return _api.getAppConfiguration().then(function () {
-              displayStatus('Connected');
+          if (_api === null) {
+            return doConnect().then(function (api) {
+              return api.getAppConfiguration().then(function (result) {
+                _appVersion = result.version;
+                displayStatus('Connected (app version ' + _appVersion + ')');
+                return api;
+              });
+            });
+          } else {
+            return _api.getAppConfiguration().then(function (result) {
+              _appVersion = result.version;
+              displayStatus('Connected (app version ' + _appVersion + ')');
               return _api;
             }).catch(function () {
               _api = null;
-              return doConnect();
+              return connect();
             });
-          } else {
-            return doConnect();
           }
         }
 
@@ -92,23 +104,35 @@
           document.getElementById('status').innerHTML = msg;
         }
 
-        function displayAddress(msg) {
-          document.getElementById('address').innerHTML = msg;
+        function displayAddress(address) {
+          document.getElementById('address').innerHTML = address;
+        }
+
+        function displaySignature(signature) {
+          document.getElementById('signature').innerHTML = signature;
         }
 
         function init() {
           connect().then(function () {
-            const inputs = document.getElementsByTagName('input');
-            for(let i = 0; i < inputs.length; i++){
-              inputs[i].disabled = false;
-            }
+            disableControls(false);
           })
+        }
+
+        function disableControls(disable) {
+          const inputs = document.getElementsByTagName('input');
+          const confirmPkEnabled = Number(_appVersion.substring(0, _appVersion.indexOf('.'))) >= 2;
+          for(let i = 0; i < inputs.length; i++){
+            if (inputs[i].id === 'confirmPublicKey' && !confirmPkEnabled) {
+              continue;
+            }
+            inputs[i].disabled = disable;
+          }
         }
 
     </script>
 </head>
 <body onload="init()">
-<div>Status: <span id="status" style="background-color: lightgray"></span></div>
+<div>Status: <span id="status" style="font-family: monospace; font-size: 15px;"></span></div>
 <div>&nbsp;</div>
 <div id="addressForm">
   <input type="text" id="bip32Path" value="44'/148'/0'" disabled>
@@ -116,7 +140,7 @@
   <input id='confirmPublicKey' type="button" onClick="getPublicKey(true)" value="Confirm Public Key" disabled>
 </div>
 <div>&nbsp;</div>
-<div id="address">&nbsp;</div>
+<div>Public Key: <span id="address" style="font-family: monospace; font-size: 15px;"></span></div>
 <div>&nbsp;</div>
 <div id="form">
     <select id="operation">
@@ -138,5 +162,7 @@
     </select>
     <input id='signTx' type="button" onClick="sign()" value="Sign" disabled>
 </div>
+<div>&nbsp;</div>
+<div>Signature: <span id="signature" style="font-family: monospace; font-size: 15px;"></span></div>
 </body>
 </html>
