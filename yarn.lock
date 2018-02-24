@@ -2,33 +2,33 @@
 # yarn lockfile v1
 
 
-"@ledgerhq/hw-app-str@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-app-str/-/hw-app-str-4.0.0.tgz#d7002eac37c58c8b114dc80edc543b69ef265d2c"
+"@ledgerhq/hw-app-str@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-app-str/-/hw-app-str-4.2.0.tgz#cb7cdc201a8c5d70eff705bd63b0070c5d7e1c74"
   dependencies:
-    "@ledgerhq/hw-transport" "^4.0.0"
+    "@ledgerhq/hw-transport" "^4.2.0"
     base32.js "^0.1.0"
     crc "^3.5.0"
     sha.js "^2.3.6"
     tweetnacl "^1.0.0"
 
-"@ledgerhq/hw-transport-node-hid@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-4.0.0.tgz#6b3aae9da62b9601476f57d651b06a6d172c0ee9"
+"@ledgerhq/hw-transport-node-hid@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-4.2.0.tgz#cbfaa47748c1b617d9dab4e822d2a60582699a29"
   dependencies:
-    "@ledgerhq/hw-transport" "^4.0.0"
+    "@ledgerhq/hw-transport" "^4.2.0"
     node-hid "^0.7.2"
 
-"@ledgerhq/hw-transport-u2f@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-u2f/-/hw-transport-u2f-4.0.0.tgz#2c8d50a5124a2e3c694b15db09d017290c921f28"
+"@ledgerhq/hw-transport-u2f@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-u2f/-/hw-transport-u2f-4.2.0.tgz#cd8812e2f372a69f9a55c15fbc70f6512ea8b30b"
   dependencies:
-    "@ledgerhq/hw-transport" "^4.0.0"
+    "@ledgerhq/hw-transport" "^4.2.0"
     u2f-api "^0.2.7"
 
-"@ledgerhq/hw-transport@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.0.0.tgz#de0bab8d1d7e963b069bbd1164bc687e8616c5e4"
+"@ledgerhq/hw-transport@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.2.0.tgz#ed0c30fc36beb0c9760fbdcb29ee4e0c61be37e8"
   dependencies:
     events "^1.1.1"
 
@@ -90,8 +90,8 @@ array-reduce@~0.0.0:
   resolved "https://registry.yarnpkg.com/array-reduce/-/array-reduce-0.0.0.tgz#173899d3ffd1c7d9383e4479525dbe278cab5f2b"
 
 asn1.js@^4.0.0:
-  version "4.9.2"
-  resolved "https://registry.yarnpkg.com/asn1.js/-/asn1.js-4.9.2.tgz#8117ef4f7ed87cd8f89044b5bff97ac243a16c9a"
+  version "4.10.1"
+  resolved "https://registry.yarnpkg.com/asn1.js/-/asn1.js-4.10.1.tgz#b9c2bf5805f1e64aadeed6df3a2bfafb5a73f5a0"
   dependencies:
     bn.js "^4.0.0"
     inherits "^2.0.1"
@@ -141,8 +141,8 @@ base32.js@^0.1.0, base32.js@~0.1.0:
   resolved "https://registry.yarnpkg.com/base32.js/-/base32.js-0.1.0.tgz#b582dec693c2f11e893cf064ee6ac5b6131a2202"
 
 base64-js@^1.0.2:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.1.tgz#a91947da1f4a516ea38e5b4ec0ec3773675e0886"
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.3.tgz#fb13668233d9614cf5fb4bce95a9ba4096cdf801"
 
 bignumber.js@^4.0.0:
   version "4.1.0"
@@ -886,8 +886,8 @@ ms@2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
 nan@^2.0.9, nan@^2.6.2:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.9.1.tgz#af88fcaee5292992c5b755121ceeaa74536fc228"
 
 node-abi@^2.2.0:
   version "2.2.0"
@@ -1073,8 +1073,8 @@ randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
     safe-buffer "^5.1.0"
 
 randomfill@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/randomfill/-/randomfill-1.0.3.tgz#b96b7df587f01dd91726c418f30553b1418e3d62"
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/randomfill/-/randomfill-1.0.4.tgz#c92196fc86ab42be983f1bf31778224931d61458"
   dependencies:
     randombytes "^2.0.5"
     safe-buffer "^5.1.0"
@@ -1254,8 +1254,8 @@ stream-combiner2@^1.1.1:
     readable-stream "^2.0.2"
 
 stream-consume@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/stream-consume/-/stream-consume-0.1.0.tgz#a41ead1a6d6081ceb79f65b061901b6d8f3d1d0f"
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/stream-consume/-/stream-consume-0.1.1.tgz#d3bdb598c2bd0ae82b8cac7ac50b1107a7996c48"
 
 stream-http@^2.0.0:
   version "2.8.0"

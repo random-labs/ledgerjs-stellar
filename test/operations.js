@@ -35,7 +35,7 @@ const operations = {
         buying: buying,
         selling: selling,
         amount: "1000",
-        price: { n: 1, d: 3 }
+        price: { n: 15644199, d: 10000000 }
       })).addMemo(StellarSdk.Memo.text("create offer"))
       .build();
   },
@@ -47,7 +47,7 @@ const operations = {
         buying: buying,
         selling: selling,
         amount: "0",
-        price: { n: 1, d: 3 },
+        price: { n: 15644199, d: 10000000 },
         offerId: '209583721'
       }))
       .build();
