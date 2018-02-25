@@ -71,7 +71,7 @@
           displayStatus('Opening');
           return LedgerjsStellar.Transport.create(openTimeout).then((transport) => {
             transport.setDebugMode(true);
-            transport.setExchangeTimeout(exchangeTimeout);
+//            transport.setExchangeTimeout(exchangeTimeout);
             _api = new LedgerjsStellar.Api(transport);
             displayStatus('Opened');
             return _api;

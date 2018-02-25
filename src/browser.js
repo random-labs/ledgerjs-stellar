@@ -1,6 +1,6 @@
-const StellarLedger = module.exports;
+const LedgerjsStellar = module.exports;
 
-StellarLedger.Transport = require("@ledgerhq/hw-transport-u2f").default;
-StellarLedger.Api = require("@ledgerhq/hw-app-str").default;
+LedgerjsStellar.Transport = require("@ledgerhq/hw-transport-u2f").default;
+LedgerjsStellar.Api = require("@ledgerhq/hw-app-str").default;
 
-module.exports = StellarLedger;
+module.exports = LedgerjsStellar;
