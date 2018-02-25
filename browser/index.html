@@ -6,7 +6,7 @@
     <script>
 
         const openTimeout = 3600000;
-        const exchangeTimeout = 60 * 1000;
+        const exchangeTimeout = 29 * 1000;
         let _api = null;
         let _appVersion = null;
 
@@ -15,11 +15,11 @@
           return connect().then(function (api) {
             const msg = confirm ? 'Confirm public key...' : 'Getting public key...';
             displayStatus(msg);
-            disableControls(true);
+//            disableControls(true);
             return api.getPublicKey(bip32Path, true, confirm).then((result) => {
               displayAddress(result.publicKey);
               displayStatus('Received public key');
-              disableControls(false);
+//              disableControls(false);
               return result.publicKey;
             }).catch((error) => {
               displayStatus('Failed to get public key: ' + error);
@@ -48,7 +48,7 @@
                     StellarSdk.Network.useTestNetwork();
                     let bip32Path = document.getElementById('bip32Path').value;
                     displayStatus('Signing transaction...');
-                    disableControls(true);
+//                    disableControls(true);
                     api.signTransaction(bip32Path, transaction.signatureBase()).then((result) => {
                       const txHash = transaction.hash();
                       const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
@@ -58,7 +58,7 @@
                         displayStatus('Bad signature');
                       }
                       displaySignature(result.signature.toString('hex'));
-                      disableControls(false);
+//                      disableControls(false);
                     }).catch(function (err) {
                       displayStatus(err);
                     });
