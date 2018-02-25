@@ -1,6 +1,7 @@
 {
   "name": "stellarjs-stellar",
   "version": "0.0.0",
+  "main": "electron/main.js",
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "^4.2.0",
     "@ledgerhq/hw-transport-u2f": "^4.2.0",
@@ -10,11 +11,16 @@
   "devDependencies": {
     "stellar-sdk": "^0.8.0",
     "browserify": "^13.1.0",
-    "uglify-js": "2.7.3"
+    "uglify-js": "2.7.3",
+    "electron": "~1.7.8",
+    "electron-rebuild": "^1.7.3",
+    "electron-builder": "^20.0.4"
   },
   "scripts": {
     "browserify": "mkdir -p browser && browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
     "uglify": "uglifyjs -o browser/ledgerjs-stellar.min.js browser/ledgerjs-stellar.js",
-    "clean": "rm -rf browser"
+    "clean": "rm -rf browser",
+    "electron": "electron .",
+    "postinstall": "electron-builder install-app-deps"
   }
 }

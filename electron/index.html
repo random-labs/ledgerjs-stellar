@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ledger Stellar Demo</title>
+    <script src="../src/operations.js"></script>
+    <script>
+      const Transport = require('@ledgerhq/hw-transport-node-hid').default;
+      const Str = require('@ledgerhq/hw-app-str').default;
+      const StellarSdk = require('stellar-sdk');
+
+      let transport = null;
+      let str = null;
+
+      function open() {
+        displayStatus('Opening');
+        return Transport.create().then(function (t) {
+          transport = t;
+          transport.setDebugMode(true);
+          str = new Str(transport);
+          displayStatus('Opened');
+          return str;
+        }).catch(function (err) {
+          displayStatus('Error opening: ' + err);
+        });
+      }
+
+      function connect() {
+        if (str !== null) {
+          return str.getAppConfiguration().then(() => {
+            return str;
+          }).catch(() => {
+            transport.close();
+            str = null;
+            return open();
+          });
+        } else {
+          return open();
+        }
+      }
+
+      function getPublicKey(confirm) {
+        const bip32Path = document.getElementById('bip32Path').value;
+        const msg = confirm ? 'Confirm public key...' : 'Getting public key...';
+        displayStatus(msg);
+        return connect().then(function (api) {
+          return api.getPublicKey(bip32Path, true, confirm).then(function (result) {
+            displayStatus('Received public key');
+            return result.publicKey;
+          });
+        }).catch(function (err) {
+          displayStatus('Failed to get public key: ' + err);
+        });
+      }
+
+      function loadAccount(publicKey) {
+        displayStatus('Loading account data...');
+        const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+        return server.loadAccount(publicKey);
+      }
+
+      function sign() {
+        let select = document.getElementById('operation');
+        let operation = select.options[select.selectedIndex].text;
+        signTransaction(operations[operation]);
+      }
+
+      function signTransaction(operation) {
+        getPublicKey(false).then((publicKey) => {
+          loadAccount(publicKey).then(function (account) {
+            StellarSdk.Network.useTestNetwork();
+            const transaction = operation(account);
+            displayStatus('Signing transaction...');
+            try {
+              const bip32Path = document.getElementById('bip32Path').value;
+              str.signTransaction(bip32Path, transaction.signatureBase()).then(function (s) {
+                const hash = transaction.hash();
+                const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
+                if (keyPair.verify(hash, s['signature'])) {
+                  displayStatus('Transaction signed');
+                } else {
+                  displayStatus('Bad signature');
+                }
+              });
+            } catch (e) {
+              displayStatus(e);
+            }
+          });
+        }).catch(function (err) {
+          displayStatus(err);
+        });
+      }
+
+      function displayStatus(msg) {
+        console.log(msg);
+        document.getElementById('status').innerHTML = msg;
+      }
+
+    </script>
+  </head>
+  <body>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+
+    <div>&nbsp;</div>
+    <div>Status: <span id="status" style="font-family: monospace; font-size: 15px;"></span></div>
+    <div>&nbsp;</div>
+
+    <div id="addressForm">
+      <input type="text" id="bip32Path" value="44'/148'/0'">
+      <input id='getPublicKey' type="button" onClick="getPublicKey(false)" value="Get Public Key">
+      <input id='confirmPublicKey' type="button" onClick="getPublicKey(true)" value="Confirm Public Key">
+    </div>
+    <div>&nbsp;</div>
+    <div id="signForm">
+      <select id="operation">
+        <option>createAccount</option>
+        <option>payment</option>
+        <option>pathPayment</option>
+        <option>createOffer</option>
+        <option>removeOffer</option>
+        <option>changeOffer</option>
+        <option>passiveOffer</option>
+        <option>changeTrust</option>
+        <option>removeTrust</option>
+        <option>allowTrust</option>
+        <option>revokeTrust</option>
+        <option>setOptions</option>
+        <option>accountMerge</option>
+        <option>manageData</option>
+        <option>inflation</option>
+      </select>
+      <input id='signTx' type="button" onClick="sign()" value="Sign">
+    </div>
+  </body>
+</html>

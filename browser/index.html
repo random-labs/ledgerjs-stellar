@@ -1,8 +1,8 @@
 <html>
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/0.8.0/stellar-sdk.js"></script>
-    <script src="../browser/ledgerjs-stellar.js"></script>
-    <script src="operations.js"></script>
+    <script src="ledgerjs-stellar.js"></script>
+    <script src="../src/operations.js"></script>
     <script>
 
         const openTimeout = 3600000;
@@ -15,11 +15,11 @@
           return connect().then(function (api) {
             const msg = confirm ? 'Confirm public key...' : 'Getting public key...';
             displayStatus(msg);
-//            disableControls(true);
+            disableControls(true);
             return api.getPublicKey(bip32Path, true, confirm).then((result) => {
               displayAddress(result.publicKey);
               displayStatus('Received public key');
-//              disableControls(false);
+              disableControls(false);
               return result.publicKey;
             }).catch((error) => {
               displayStatus('Failed to get public key: ' + error);
@@ -48,7 +48,7 @@
                     StellarSdk.Network.useTestNetwork();
                     let bip32Path = document.getElementById('bip32Path').value;
                     displayStatus('Signing transaction...');
-//                    disableControls(true);
+                    disableControls(true);
                     api.signTransaction(bip32Path, transaction.signatureBase()).then((result) => {
                       const txHash = transaction.hash();
                       const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
@@ -58,7 +58,7 @@
                         displayStatus('Bad signature');
                       }
                       displaySignature(result.signature.toString('hex'));
-//                      disableControls(false);
+                      disableControls(false);
                     }).catch(function (err) {
                       displayStatus(err);
                     });
@@ -136,10 +136,10 @@
 </head>
 <body onload="init()">
 <div>Status: <span id="status" style="font-family: monospace; font-size: 15px;"></span></div>
-<!--<div>&nbsp;</div>-->
-<!--<div id="connectForm">-->
-    <!--<input id='connect' type="button" onClick="connect()" value="Connect" disabled>-->
-<!--</div>-->
+<div>&nbsp;</div>
+<div id="connectForm">
+    <input id='connect' type="button" onClick="connect()" value="Connect" disabled>
+</div>
 <div>&nbsp;</div>
 <div id="addressForm">
   <input type="text" id="bip32Path" value="44'/148'/0'" disabled>

@@ -19,16 +19,11 @@ Minify it:
 $ yarn run uglify
 ```
 
-### Running the NodeJS scripts
+### Running the Electron demo
 
-Get public key:
+Make sure to disable browser support.
 ```
-$ node test/node.js getPublicKey [bip32Path] [confirm]
-```
-
-Transaction signing:
-```
-$ node test/node.js signTx [operation]
+$ yarn electron
 ```
 
 ### Running the browser demo
@@ -36,4 +31,4 @@ $ node test/node.js signTx [operation]
 - Make sure to enable browser support
 - Build the browserified file as described above.
 - Run `python HttpsServer.py`
-- In Chrome open `https://localhost:4443/test/index.html` 
+- In Chrome open `https://localhost:4443/browser/index.html` 
