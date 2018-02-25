@@ -17,7 +17,7 @@
     "electron-builder": "^20.0.4"
   },
   "scripts": {
-    "browserify": "mkdir -p browser && browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
+    "browserify": "browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
     "uglify": "uglifyjs -o browser/ledgerjs-stellar.min.js browser/ledgerjs-stellar.js",
     "clean": "rm -rf browser",
     "electron": "electron .",
