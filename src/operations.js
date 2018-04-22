@@ -123,9 +123,15 @@ const operations = {
     opts.medThreshold = 255;
     opts.highThreshold = 255;
 
+    var hash = new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.accountMerge({
+        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
+      })).addMemo(StellarSdk.Memo.text("merge account"))
+      .build().hash();
+
     opts.signer = {
-      ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
-      // sha256Hash: revokeTrustTx(account).hash().toString('hex'),
+      // ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
+      sha256Hash: hash.toString('hex'),
       weight: 1
     };
     // opts.homeDomain = "www.longexampleislong.com";
@@ -152,7 +158,20 @@ const operations = {
       .addOperation(StellarSdk.Operation.inflation())
       .addMemo(StellarSdk.Memo.text("maximum memo length 28 chars"))
       .build();
+  },
+  multi: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.payment({
+        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
+        asset: StellarSdk.Asset.native(),
+        amount: "2000"
+      })).addOperation(StellarSdk.Operation.manageData({
+        name: "testname",
+        value: "testvalue"
+      }))
+      .build();
   }
+
 };
 
 if (typeof(module) !== 'undefined') {
