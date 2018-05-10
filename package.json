@@ -19,7 +19,6 @@
   "scripts": {
     "browserify": "browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
     "uglify": "uglifyjs -o browser/ledgerjs-stellar.min.js browser/ledgerjs-stellar.js",
-    "clean": "rm -rf browser",
     "electron": "electron .",
     "postinstall": "electron-builder install-app-deps"
   }

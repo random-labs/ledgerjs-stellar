@@ -1,6 +1,6 @@
 <html>
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/0.8.0/stellar-sdk.js"></script>
+    <script src="stellar-sdk.js"></script>
     <script src="ledgerjs-stellar.js"></script>
     <script src="../src/operations.js"></script>
     <script>
@@ -31,7 +31,13 @@
         function sign() {
           let select = document.getElementById('operation');
           let operation = select.options[select.selectedIndex].text;
-          signTransaction(operations[operation]);
+          signTransaction(operations[operation], "signTransaction");
+        }
+
+        function signHash() {
+          let select = document.getElementById('operation');
+          let operation = select.options[select.selectedIndex].text;
+          signTransaction(operations[operation], "signHash");
         }
 
         function loadAccount(publicKey) {
@@ -39,7 +45,7 @@
           return server.loadAccount(publicKey);
         }
 
-        function signTransaction(operation) {
+        function signTransaction(operation, method) {
             getPublicKey(false).then((publicKey) => {
                 displayStatus('Loading account data...');
                 loadAccount(publicKey).then((account) => {
@@ -49,7 +55,8 @@
                     let bip32Path = document.getElementById('bip32Path').value;
                     displayStatus('Signing transaction...');
 //                    disableControls(true);
-                    api.signTransaction(bip32Path, transaction.signatureBase()).then((result) => {
+                    let arg = method === 'signTransaction' ? transaction.signatureBase() : transaction.hash();
+                    api[method](bip32Path, arg).then((result) => {
                       const txHash = transaction.hash();
                       const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
                       if (keyPair.verify(txHash, result.signature)) {
@@ -95,9 +102,7 @@
               displayStatus('Connected (app version ' + _appVersion + ')');
               return _api;
             }).catch((err) => {
-              _api = null;
               console.log(err);
-              return connect();
             });
           }
         }
@@ -164,10 +169,13 @@
         <option>revokeTrust</option>
         <option>setOptions</option>
         <option>accountMerge</option>
-        <option>manageData</option>
+        <option>setData</option>
+        <option>removeData</option>
         <option>inflation</option>
+        <option>multi</option>
     </select>
     <input id='signTx' type="button" onClick="sign()" value="Sign" disabled>
+    <input id='signTxHash' type="button" onClick="signHash()" value="Sign Hash" disabled>
 </div>
 <div>&nbsp;</div>
 <div>Signature: <span id="signature" style="font-family: monospace; font-size: 15px;"></span></div>

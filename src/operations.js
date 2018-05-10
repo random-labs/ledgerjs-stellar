@@ -123,18 +123,19 @@ const operations = {
     opts.medThreshold = 255;
     opts.highThreshold = 255;
 
-    var hash = new StellarSdk.TransactionBuilder(account)
-      .addOperation(StellarSdk.Operation.accountMerge({
-        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
-      })).addMemo(StellarSdk.Memo.text("merge account"))
-      .build().hash();
+    // var hash = new StellarSdk.TransactionBuilder(account)
+    //   .addOperation(StellarSdk.Operation.accountMerge({
+    //     destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
+    //   })).addMemo(StellarSdk.Memo.text("merge account"))
+    //   .build().hash();
 
     opts.signer = {
-      // ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
-      sha256Hash: hash.toString('hex'),
+      ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
+      // sha256Hash: hash.toString('hex'),
       weight: 1
     };
-    // opts.homeDomain = "www.longexampleislong.com";
+    opts.homeDomain = "example.com";
+    opts.source = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.setOptions(opts)).build();
   },
@@ -142,14 +143,23 @@ const operations = {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.accountMerge({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
+        // ,source: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7"
       })).addMemo(StellarSdk.Memo.text("merge account"))
       .build();
   },
-  manageData: function(account) {
+  setData: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
-        name: "verylongapplicationdataname",
+        name: "dataname",
         value: "value"
+      }))
+      .build();
+  },
+  removeData: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.manageData({
+        name: "dataname",
+        value: null
       }))
       .build();
   },
@@ -161,13 +171,36 @@ const operations = {
   },
   multi: function(account) {
     return new StellarSdk.TransactionBuilder(account)
+      // .addOperation(StellarSdk.Operation.manageData({
+      //   name: "testname",
+      //   value: "testvalue"
+      // }))
+      .addOperation(StellarSdk.Operation.manageData({
+        name: "dataEntry",
+        value: "le.non.dupe:dataEntryValue"
+      }))
       .addOperation(StellarSdk.Operation.payment({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         asset: StellarSdk.Asset.native(),
         amount: "2000"
-      })).addOperation(StellarSdk.Operation.manageData({
-        name: "testname",
-        value: "testvalue"
+      }))
+      .addOperation(StellarSdk.Operation.setOptions({
+        inflationDest: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
+        signer: {
+          ed25519PublicKey: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
+          weight: 1
+        }
+      }))
+      .addOperation(StellarSdk.Operation.payment({
+        destination: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
+        asset: new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"),
+        amount: "9000"
+      }))
+      .addOperation(StellarSdk.Operation.setOptions({
+        signer: {
+          ed25519PublicKey: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
+          weight: 1
+        }
       }))
       .build();
   }
