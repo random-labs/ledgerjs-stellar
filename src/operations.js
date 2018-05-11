@@ -23,7 +23,8 @@ const operations = {
         sendAsset: new StellarSdk.Asset("USD", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"),
         sendMax: "100",
         destAsset: new StellarSdk.Asset("NGN", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"),
-        destAmount: "1800"
+        destAmount: "1800",
+        path: [new StellarSdk.Asset("EUR", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"), new StellarSdk.Asset("CAD", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I")]
       })).addMemo(StellarSdk.Memo.text("dollar to naira"))
       .build();
   },
