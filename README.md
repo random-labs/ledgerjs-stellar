@@ -108,5 +108,4 @@ const Api = LedgerjsStellar.Api;
 
 ### Known Limitations
 
-- The U2F transport currently [contains a bug](https://github.com/LedgerHQ/ledgerjs/issues/94) that makes it not possible to use exchange timeouts of greater than 30 seconds.
 - Although Firefox now supports U2F the LedgerJS U2F transport does not support Firefox.
