@@ -1,21 +1,29 @@
+if (typeof(StellarSdk) === 'undefined') {
+  StellarSdk = require('stellar-sdk');
+  StellarSdk.Network.useTestNetwork();
+}
+
 const operations = {
+
   createAccount: function (account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.createAccount({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         startingBalance: "2000"
-      })).addMemo(StellarSdk.Memo.text("create new account"))
+      })).addMemo(StellarSdk.Memo.text("create account"))
       .build();
   },
+
   payment: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.payment({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         asset: StellarSdk.Asset.native(),
         amount: "2000"
-      })).addMemo(StellarSdk.Memo.text("sending starlight"))
+      })).addMemo(StellarSdk.Memo.text("payment"))
       .build();
   },
+
   pathPayment: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.pathPayment({
@@ -28,6 +36,7 @@ const operations = {
       })).addMemo(StellarSdk.Memo.text("dollar to naira"))
       .build();
   },
+
   createOffer: function (account) {
     var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     var selling = StellarSdk.Asset.native();
@@ -40,6 +49,7 @@ const operations = {
       })).addMemo(StellarSdk.Memo.text("create offer"))
       .build();
   },
+
   removeOffer: function(account) {
     var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     var selling = StellarSdk.Asset.native();
@@ -53,6 +63,7 @@ const operations = {
       }))
       .build();
   },
+
   changeOffer: function(account) {
     var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     var selling = StellarSdk.Asset.native();
@@ -66,6 +77,7 @@ const operations = {
       }))
       .build();
   },
+
   passiveOffer: function(account) {
     var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     var selling = StellarSdk.Asset.native();
@@ -78,6 +90,7 @@ const operations = {
       })).addMemo(StellarSdk.Memo.text("create offer"))
       .build();
   },
+
   changeTrust: function(account) {
     var asset = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     return new StellarSdk.TransactionBuilder(account)
@@ -87,6 +100,7 @@ const operations = {
       }))
       .build();
   },
+
   removeTrust: function(account) {
     var asset = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     return new StellarSdk.TransactionBuilder(account)
@@ -96,6 +110,7 @@ const operations = {
       }))
       .build();
   },
+
   allowTrust: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.allowTrust({
@@ -105,6 +120,7 @@ const operations = {
       })).addMemo(StellarSdk.Memo.text("allow trust"))
       .build();
   },
+
   revokeTrust: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.allowTrust({
@@ -114,32 +130,38 @@ const operations = {
       })).addMemo(StellarSdk.Memo.text("revoke trust"))
       .build();
   },
+
   setOptions: function(account) {
     var opts = {};
     opts.inflationDest = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
-    opts.clearFlags = StellarSdk.AuthRevocableFlag | StellarSdk.AuthImmutableFlag;
+    // opts.clearFlags = StellarSdk.AuthRevocableFlag | StellarSdk.AuthImmutableFlag | StellarSdk.AuthRequiredFlag;
     opts.setFlags = StellarSdk.AuthRequiredFlag;
-    opts.masterWeight = 255;
-    opts.lowThreshold = 255;
+    opts.masterWeight = 2;
+    // opts.lowThreshold = 255;
     opts.medThreshold = 255;
-    opts.highThreshold = 255;
+    // opts.highThreshold = 255;
 
-    // var hash = new StellarSdk.TransactionBuilder(account)
-    //   .addOperation(StellarSdk.Operation.accountMerge({
-    //     destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
-    //   })).addMemo(StellarSdk.Memo.text("merge account"))
-    //   .build().hash();
+    StellarSdk.Network.useTestNetwork();
+    var hash = new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.accountMerge({
+        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
+      })).addMemo(StellarSdk.Memo.text("merge account"))
+      .build().hash();
 
     opts.signer = {
-      ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
-      // sha256Hash: hash.toString('hex'),
-      weight: 1
+      // ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
+      preAuthTx: hash.toString('hex'),
+      weight: 0
     };
+
     opts.homeDomain = "example.com";
-    opts.source = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
+    // opts.source = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
     return new StellarSdk.TransactionBuilder(account)
-      .addOperation(StellarSdk.Operation.setOptions(opts)).build();
+      .addOperation(StellarSdk.Operation.setOptions(opts))
+      // .addMemo(StellarSdk.Memo.return(hash))
+      .build();
   },
+
   accountMerge: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.accountMerge({
@@ -148,14 +170,16 @@ const operations = {
       })).addMemo(StellarSdk.Memo.text("merge account"))
       .build();
   },
+
   setData: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
         name: "dataname",
-        value: "value"
+        value: "largerdatavalue"
       }))
       .build();
   },
+
   removeData: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
@@ -164,45 +188,31 @@ const operations = {
       }))
       .build();
   },
+
   inflation: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.inflation())
-      .addMemo(StellarSdk.Memo.text("maximum memo length 28 chars"))
+      .addMemo(StellarSdk.Memo.text("run inflation"))
       .build();
   },
+
   multi: function(account) {
-    return new StellarSdk.TransactionBuilder(account)
-      // .addOperation(StellarSdk.Operation.manageData({
-      //   name: "testname",
-      //   value: "testvalue"
-      // }))
+    return new StellarSdk.TransactionBuilder(account,
+      {
+        fee: 1000000,
+        timebounds: {
+          minTime: 1441852,
+          maxTime: 3541852
+        }
+      })
       .addOperation(StellarSdk.Operation.manageData({
-        name: "dataEntry",
-        value: "le.non.dupe:dataEntryValue"
-      }))
-      .addOperation(StellarSdk.Operation.payment({
-        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
-        asset: StellarSdk.Asset.native(),
-        amount: "2000"
+        name: "dataEntryName",
+        value: "dataEntryValueCanBeAVeryLongMax64Characters"
       }))
       .addOperation(StellarSdk.Operation.setOptions({
-        inflationDest: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
-        signer: {
-          ed25519PublicKey: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
-          weight: 1
-        }
+        homeDomain: "example.com"
       }))
-      .addOperation(StellarSdk.Operation.payment({
-        destination: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
-        asset: new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"),
-        amount: "9000"
-      }))
-      .addOperation(StellarSdk.Operation.setOptions({
-        signer: {
-          ed25519PublicKey: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
-          weight: 1
-        }
-      }))
+      .addMemo(StellarSdk.Memo.text("zstg530ds0et9422ddg2djl"))
       .build();
   }
 

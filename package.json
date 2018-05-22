@@ -11,15 +11,11 @@
   "devDependencies": {
     "stellar-sdk": "^0.8.0",
     "browserify": "^13.1.0",
-    "uglify-js": "2.7.3",
-    "electron": "~1.7.8",
-    "electron-rebuild": "^1.7.3",
-    "electron-builder": "^20.0.4"
+    "uglify-js": "2.7.3"
   },
   "scripts": {
     "browserify": "browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
     "uglify": "uglifyjs -o browser/ledgerjs-stellar.min.js browser/ledgerjs-stellar.js",
-    "electron": "electron .",
-    "postinstall": "electron-builder install-app-deps"
+    "script": "node src/node.js"
   }
 }
