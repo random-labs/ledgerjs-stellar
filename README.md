@@ -22,14 +22,14 @@ $ yarn run uglify
 
 You can find the minified file at `./browser/ledgerjs-stellar-min.js`
 
-### Running the Electron demo
+### Running the command line demo scripts
 
 Make sure to disable browser support in the app settings
 ```
-$ yarn electron
+$ yarn script [operation]
 ```
 
-The relevant code is contained in `./electron/index.html`
+Open `src/operations.js` for a list of relevant operations.
 
 ### Running the browser demo
 
@@ -38,7 +38,7 @@ The relevant code is contained in `./electron/index.html`
 - Run `python HttpsServer.py`
 - In Chrome open `https://localhost:4443/browser/index.html`
 
-The relevant code is contained in `./browser/index.html`
+The relevant code is contained in `./browser/index.html` and `src/operations.js`.
 
 ### Usage of LedgerJS Stellar library
 
