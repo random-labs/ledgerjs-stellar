@@ -3,6 +3,16 @@ if (typeof(StellarSdk) === 'undefined') {
   StellarSdk.Network.useTestNetwork();
 }
 
+const util = {
+  createHash: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.accountMerge({
+        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
+      }))
+      .build().hash();
+  }
+};
+
 const operations = {
 
   createAccount: function (account) {
@@ -10,7 +20,7 @@ const operations = {
       .addOperation(StellarSdk.Operation.createAccount({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         startingBalance: "2000"
-      })).addMemo(StellarSdk.Memo.text("create account"))
+      }))
       .build();
   },
 
@@ -20,7 +30,7 @@ const operations = {
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         asset: StellarSdk.Asset.native(),
         amount: "2000"
-      })).addMemo(StellarSdk.Memo.text("payment"))
+      }))
       .build();
   },
 
@@ -32,27 +42,28 @@ const operations = {
         sendMax: "100",
         destAsset: new StellarSdk.Asset("NGN", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"),
         destAmount: "1800",
-        path: [new StellarSdk.Asset("EUR", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"), new StellarSdk.Asset("CAD", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I")]
+        path: [new StellarSdk.Asset("EUR", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"),
+               new StellarSdk.Asset("CAD", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I")]
       })).addMemo(StellarSdk.Memo.text("dollar to naira"))
       .build();
   },
 
   createOffer: function (account) {
-    var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
-    var selling = StellarSdk.Asset.native();
+    const buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
+    const selling = StellarSdk.Asset.native();
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageOffer({
         buying: buying,
         selling: selling,
         amount: "1000",
         price: { n: 15644199, d: 10000000 }
-      })).addMemo(StellarSdk.Memo.text("create offer"))
+      }))
       .build();
   },
 
   removeOffer: function(account) {
-    var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
-    var selling = StellarSdk.Asset.native();
+    const buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
+    const selling = StellarSdk.Asset.native();
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageOffer({
         buying: buying,
@@ -65,8 +76,8 @@ const operations = {
   },
 
   changeOffer: function(account) {
-    var buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
-    var selling = StellarSdk.Asset.native();
+    const buying = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
+    const selling = StellarSdk.Asset.native();
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageOffer({
         buying: buying,
@@ -87,11 +98,11 @@ const operations = {
         selling: selling,
         amount: "1000",
         price: { n: 1, d: 4 }
-      })).addMemo(StellarSdk.Memo.text("create offer"))
+      }))
       .build();
   },
 
-  changeTrust: function(account) {
+  addTrust: function(account) {
     var asset = new StellarSdk.Asset("SLT", "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I");
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.changeTrust({
@@ -117,7 +128,7 @@ const operations = {
         trustor: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         assetCode: "JPY",
         authorize: true
-      })).addMemo(StellarSdk.Memo.text("allow trust"))
+      }))
       .build();
   },
 
@@ -127,38 +138,105 @@ const operations = {
         trustor: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
         assetCode: "JPY",
         authorize: false
-      })).addMemo(StellarSdk.Memo.text("revoke trust"))
+      }))
       .build();
   },
 
-  setOptions: function(account) {
-    var opts = {};
-    opts.inflationDest = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
-    // opts.clearFlags = StellarSdk.AuthRevocableFlag | StellarSdk.AuthImmutableFlag | StellarSdk.AuthRequiredFlag;
-    opts.setFlags = StellarSdk.AuthRequiredFlag;
-    opts.masterWeight = 2;
-    // opts.lowThreshold = 255;
-    opts.medThreshold = 255;
-    // opts.highThreshold = 255;
+  setAllOptions: function(account) {
 
-    StellarSdk.Network.useTestNetwork();
-    var hash = new StellarSdk.TransactionBuilder(account)
-      .addOperation(StellarSdk.Operation.accountMerge({
-        destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
-      })).addMemo(StellarSdk.Memo.text("merge account"))
-      .build().hash();
-
-    opts.signer = {
-      // ed25519PublicKey: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7",
-      preAuthTx: hash.toString('hex'),
-      weight: 0
-    };
-
-    // opts.homeDomain = "example.com";
-    opts.source = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
     return new StellarSdk.TransactionBuilder(account)
-      .addOperation(StellarSdk.Operation.setOptions(opts))
-      // .addMemo(StellarSdk.Memo.return(hash))
+      .addOperation(StellarSdk.Operation.setOptions({
+        inflationDest: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
+        clearFlags: StellarSdk.AuthRevocableFlag | StellarSdk.AuthImmutableFlag,
+        setFlags: StellarSdk.AuthRequiredFlag,
+        masterWeight: 0,
+        lowThreshold: 1,
+        medThreshold: 2,
+        highThreshold: 3,
+        homeDomain: "example.com",
+        signer: {
+          preAuthTx: util.createHash(account).toString('hex'),
+          weight: 1
+        }
+      }))
+      .build();
+  },
+
+  addHashXSigner: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        signer: {
+          sha256Hash: util.createHash(account).toString('hex'),
+          weight: 2
+        }
+      }))
+      .build();
+  },
+
+  removePublicKeySigner: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        signer: {
+          ed25519PublicKey: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
+          weight: 0
+        }
+      }))
+      .build();
+  },
+
+  setMasterWeight: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        masterWeight: 3
+      }))
+      .build();
+  },
+
+  clearFlags: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        clearFlags: StellarSdk.AuthRevocableFlag | StellarSdk.AuthImmutableFlag
+      }))
+      .build();
+  },
+
+  setFlags: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        setFlags: StellarSdk.AuthRequiredFlag
+      }))
+      .build();
+  },
+
+  setLowThreshold: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        lowThreshold: 3
+      }))
+      .build();
+  },
+
+  setMediumThreshold: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        medThreshold: 3
+      }))
+      .build();
+  },
+
+  setHighThreshold: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        highThreshold: 3
+      }))
+      .build();
+  },
+
+  setHomeDomain: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.setOptions({
+        homeDomain: "stellar.org"
+      }))
       .build();
   },
 
@@ -166,8 +244,7 @@ const operations = {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.accountMerge({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
-        // ,source: "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7"
-      })).addMemo(StellarSdk.Memo.text("merge account"))
+      }))
       .build();
   },
 
@@ -192,19 +269,58 @@ const operations = {
   inflation: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.inflation())
-      .addMemo(StellarSdk.Memo.text("run inflation"))
       .build();
   },
 
-  multi: function(account) {
-    return new StellarSdk.TransactionBuilder(account,
-      {
-        fee: 1000000,
+  memoText: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.inflation())
+      .addMemo(StellarSdk.Memo.text("via lumina"))
+      .build();
+  },
+
+  memoId: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.inflation())
+      .addMemo(StellarSdk.Memo.id("1234567890"))
+      .build();
+  },
+
+  memoHash: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.inflation())
+      .addMemo(StellarSdk.Memo.hash(util.createHash(account)))
+      .build();
+  },
+
+  memoReturn: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.inflation())
+      .addMemo(StellarSdk.Memo.return(util.createHash(account)))
+      .build();
+  },
+
+  operationSource: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
+      .addOperation(StellarSdk.Operation.inflation({
+        source: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
+      }))
+      .build();
+  },
+
+  timeBounds: function(account) {
+    return new StellarSdk.TransactionBuilder(account, {
         timebounds: {
           minTime: 1441852,
           maxTime: 3541852
         }
       })
+      .addOperation(StellarSdk.Operation.inflation())
+      .build();
+  },
+
+  multiOp: function(account) {
+    return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
         name: "dataEntryName",
         value: "dataEntryValue"
@@ -212,7 +328,12 @@ const operations = {
       .addOperation(StellarSdk.Operation.setOptions({
         homeDomain: "example.com"
       }))
-      .addMemo(StellarSdk.Memo.id("123456789"))
+      .addOperation(StellarSdk.Operation.payment({
+          destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I",
+          asset: StellarSdk.Asset.native(),
+          amount: "2000"
+
+        }))
       .build();
   }
 
