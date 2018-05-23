@@ -1,4 +1,6 @@
-Some scripts to demo and test Stellar Ledger integration and a script to create a browserified version of the library.
+#Introduction
+
+This repository contains some scripts to demo and test the [Stellar Ledger](https://github.com/lenondupe/ledger-app-stellar) app and a script to create a browserified version of the library.
 Note that the libary works the same for both the Ledger Nano S and Blue device. No special handling is required for either.
 
 ### Building
@@ -8,7 +10,7 @@ Install the dependencies:
 $ yarn install
 ```
 
-Create a browserified file containing Ledgerjs U2F transport and Ledger Stellar API:
+Create a browserified file containing Ledgerjs U2F transport and Ledgerjs Stellar API:
 ```
 $ yarn run browserify
 ```
@@ -24,16 +26,14 @@ You can find the minified file at `./browser/ledgerjs-stellar-min.js`
 
 ### Running the command line demo scripts
 
-Make sure to disable browser support in the app settings
 ```
 $ yarn script [operation]
 ```
 
-Open `src/operations.js` for a list of relevant operations.
+`src/operations.js` contains the list of the operations you can run.
 
 ### Running the browser demo
 
-- Make sure to enable browser support in the app settings
 - Build the browserified file as described above.
 - Run `python HttpsServer.py`
 - In Chrome open `https://localhost:4443/browser/index.html`
