@@ -1,4 +1,4 @@
-#Introduction
+### Introduction
 
 This repository contains some scripts to demo and test the [Stellar Ledger](https://github.com/lenondupe/ledger-app-stellar) app and a script to create a browserified version of the library.
 Note that the libary works the same for both the Ledger Nano S and Blue device. No special handling is required for either.
