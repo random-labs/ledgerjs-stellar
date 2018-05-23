@@ -12,13 +12,11 @@ Transport.create().then(transport => {
   const api = new Api(transport);
   transport.setDebugMode(true);
   api.getPublicKey("44'/148'/0'").then(result => {
-    const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
-    server.loadAccount(result.publicKey).then(account => {
+      const account = new StellarSdk.Account(result.publicKey, "12345677890");
       const transaction = Operations[operationName](account);
       console.log(transaction.signatureBase().length);
       api.signTransaction("44'/148'/0'", transaction.signatureBase()).then(r => {
         console.log(r);
       })
-    });
   });
 });

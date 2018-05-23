@@ -41,36 +41,33 @@
         }
 
         function loadAccount(publicKey) {
-          const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
-          return server.loadAccount(publicKey);
+          return new StellarSdk.Account(publicKey, "12345677890");
         }
 
         function signTransaction(operation, method) {
             getPublicKey(false).then((publicKey) => {
-                displayStatus('Loading account data...');
-                loadAccount(publicKey).then((account) => {
-                  const transaction = operation(account);
-                  connect().then((api) => {
-                    StellarSdk.Network.useTestNetwork();
-                    let bip32Path = document.getElementById('bip32Path').value;
-                    displayStatus('Signing transaction...');
-//                    disableControls(true);
-                    let arg = method === 'signTransaction' ? transaction.signatureBase() : transaction.hash();
-                    api[method](bip32Path, arg).then((result) => {
-                      const txHash = transaction.hash();
-                      const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
-                      if (keyPair.verify(txHash, result.signature)) {
-                        displayStatus('Transaction signed');
-                      } else {
-                        displayStatus('Bad signature');
-                      }
-                      displaySignature(result.signature.toString('hex'));
-//                      disableControls(false);
-                    }).catch(function (err) {
-                      displayStatus(err);
-                    });
-                  });
+              const account = loadAccount(publicKey);
+              const transaction = operation(account);
+              connect().then((api) => {
+                StellarSdk.Network.useTestNetwork();
+                let bip32Path = document.getElementById('bip32Path').value;
+                displayStatus('Signing transaction...');
+    //                    disableControls(true);
+                let arg = method === 'signTransaction' ? transaction.signatureBase() : transaction.hash();
+                api[method](bip32Path, arg).then((result) => {
+                  const txHash = transaction.hash();
+                  const keyPair = StellarSdk.Keypair.fromPublicKey(publicKey);
+                  if (keyPair.verify(txHash, result.signature)) {
+                    displayStatus('Transaction signed');
+                  } else {
+                    displayStatus('Bad signature');
+                  }
+                  displaySignature(result.signature.toString('hex'));
+    //                    disableControls(false);
+                }).catch(function (err) {
+                  displayStatus(err);
                 });
+              });
             });
         }
 
