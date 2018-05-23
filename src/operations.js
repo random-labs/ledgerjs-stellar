@@ -154,8 +154,8 @@ const operations = {
       weight: 0
     };
 
-    opts.homeDomain = "example.com";
-    // opts.source = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
+    // opts.homeDomain = "example.com";
+    opts.source = "GDGU5OAPHNPU5UCLE5RDJHG7PXZFQYWKCFOEXSXNMR6KRQRI5T6XXCD7";
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.setOptions(opts))
       // .addMemo(StellarSdk.Memo.return(hash))
@@ -207,12 +207,12 @@ const operations = {
       })
       .addOperation(StellarSdk.Operation.manageData({
         name: "dataEntryName",
-        value: "dataEntryValueCanBeAVeryLongMax64Characters"
+        value: "dataEntryValue"
       }))
       .addOperation(StellarSdk.Operation.setOptions({
         homeDomain: "example.com"
       }))
-      .addMemo(StellarSdk.Memo.text("zstg530ds0et9422ddg2djl"))
+      .addMemo(StellarSdk.Memo.id("123456789"))
       .build();
   }
 
