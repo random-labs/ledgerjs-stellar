@@ -14,7 +14,7 @@ Transport.create().then(transport => {
   api.getPublicKey("44'/148'/0'").then(result => {
       const account = new StellarSdk.Account(result.publicKey, "12345677890");
       const transaction = Operations[operationName](account);
-      console.log(transaction.signatureBase().length);
+      console.log(transaction);
       api.signTransaction("44'/148'/0'", transaction.signatureBase()).then(r => {
         console.log(r);
       })

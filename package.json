@@ -16,6 +16,8 @@
   "scripts": {
     "browserify": "browserify --standalone LedgerjsStellar --outfile browser/ledgerjs-stellar.js src/browser.js",
     "uglify": "uglifyjs -o browser/ledgerjs-stellar.min.js browser/ledgerjs-stellar.js",
-    "script": "node src/node.js"
+    "sign": "node src/sign.js",
+    "address": "node src/address.js",
+    "hash": "node src/hash.js"
   }
 }

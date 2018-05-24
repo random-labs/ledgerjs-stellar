@@ -26,11 +26,25 @@ You can find the minified file at `./browser/ledgerjs-stellar-min.js`
 
 ### Running the command line demo scripts
 
+#### signing a transaction
+
 ```
-$ yarn script [operation]
+$ yarn sign [operation]
 ```
 
 `src/operations.js` contains the list of the operations you can run.
+
+#### signing a hash
+
+```
+$ yarn hash
+```
+
+#### confirming the address
+```
+$ yarn address
+```
+
 
 ### Running the browser demo
 
