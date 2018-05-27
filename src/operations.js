@@ -5,6 +5,7 @@ if (typeof(StellarSdk) === 'undefined') {
 
 const util = {
   createHash: function(account) {
+    StellarSdk.Network.useTestNetwork();
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.accountMerge({
         destination: "GADFVW3UXVKDOU626XUPYDJU2BFCGFJHQ6SREYOZ6IJV4XSHOALEQN2I"
