@@ -252,8 +252,8 @@ const operations = {
   setData: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
-        name: "dataname",
-        value: "largerdatavalue"
+        name: "dataKey",
+        value: "starlight" // base 64 encoded on device is 'c3RhcmxpZ2h0'
       }))
       .build();
   },
@@ -261,7 +261,7 @@ const operations = {
   removeData: function(account) {
     return new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.manageData({
-        name: "dataname",
+        name: "dataKey",
         value: null
       }))
       .build();
